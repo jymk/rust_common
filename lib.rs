@@ -8,5 +8,4 @@ pub mod strings;
 pub mod time;
 
 pub use crypto;
-pub use serde;
 pub use serde_json;
