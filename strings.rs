@@ -35,8 +35,4 @@ pub fn extract_normal_lower_char(s: &str) -> String {
 }
 
 #[test]
-fn test() {
-    let a = [129, 132, 24, 85, 232, 153, 124, 49, 140, 253];
-    let a = [129, 132, 16, 136, 184, 225, 116, 236, 220, 133];
-    println!("{:?}", super::base64::base64_encode(&a));
-}
+fn test() {}
