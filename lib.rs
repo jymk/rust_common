@@ -1,5 +1,5 @@
 mod base64;
-mod crypto;
+mod cripto;
 mod errs;
 mod file;
 mod resultat;
@@ -7,11 +7,14 @@ mod status;
 mod strings;
 mod time;
 
-pub use crate::crypto::*;
 pub use base64::*;
+pub use cripto::*;
+pub use crypto::*;
 pub use errs::*;
 pub use file::*;
 pub use resultat::*;
+pub use serde::*;
+pub use serde_json::*;
 pub use status::*;
 pub use strings::*;
 pub use time::*;
