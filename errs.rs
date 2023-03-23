@@ -4,6 +4,12 @@ use std::fmt::{Debug, Display};
 #[derive(Debug, Clone)]
 pub struct SError(String);
 
+impl SError {
+    pub fn to_sresult<T>(&self) -> SResult<T> {
+        sresult_from_err(&self.0)
+    }
+}
+
 impl From<std::io::Error> for SError {
     fn from(e: std::io::Error) -> Self {
         Self(e.to_string())
@@ -16,9 +22,21 @@ impl From<&str> for SError {
     }
 }
 
+impl From<&String> for SError {
+    fn from(e: &String) -> Self {
+        Self(e.clone())
+    }
+}
+
 impl From<String> for SError {
     fn from(e: String) -> Self {
         Self(e)
+    }
+}
+
+impl From<Vec<u8>> for SError {
+    fn from(e: Vec<u8>) -> Self {
+        Self(String::from_utf8_lossy(&e).to_string())
     }
 }
 
@@ -77,6 +95,12 @@ impl<T: Debug> From<std::io::Result<T>> for SErrs {
 
 impl From<&str> for SErrs {
     fn from(s: &str) -> Self {
+        Self::SError(SError::from(s))
+    }
+}
+
+impl From<&String> for SErrs {
+    fn from(s: &String) -> Self {
         Self::SError(SError::from(s))
     }
 }

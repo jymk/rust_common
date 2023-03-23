@@ -1,10 +1,9 @@
-use std::{
-    fs::File,
-    io::{Read, Result},
-};
+use std::{fs::File, io::Read};
+
+use crate::errs::{SError, SResult};
 
 /// 文件转u8 vec
-pub fn file_to_u8s(path: &str) -> Result<Vec<u8>> {
+pub fn file_to_u8s(path: &str) -> SResult<Vec<u8>> {
     let mut file = File::open(path)?;
     let mut buf = Vec::default();
     file.read_to_end(&mut buf).unwrap();
@@ -68,7 +67,7 @@ pub fn base64_encode(data: &[u8]) -> String {
 }
 
 /// 文件转base64
-pub fn file_to_base64(path: &str) -> Result<String> {
+pub fn file_to_base64(path: &str) -> SResult<String> {
     // 读取文件内容为Vec<u8>
     let u8_vec = file_to_u8s(path)?;
     // 将[u8]转为base64
@@ -76,12 +75,20 @@ pub fn file_to_base64(path: &str) -> Result<String> {
 }
 
 /// base64解码
-pub fn base64_decode(data: &[u8]) -> Vec<u8> {
+pub fn base64_decode(data: &[u8]) -> SResult<Vec<u8>> {
     let mut res = Vec::default();
 
     let len = data.len();
     if len == 0 {
-        return res;
+        return Ok(res);
+    }
+
+    if len % 4 != 0 {
+        return SError::from(format!(
+            "illegal base64, excepted a multiple of 4, its' len is {}",
+            len
+        ))
+        .to_sresult();
     }
 
     let mut buf = [0u8; 4];
@@ -103,13 +110,15 @@ pub fn base64_decode(data: &[u8]) -> Vec<u8> {
         res.push((buf[2] << 6 | buf[3]) & MASK_DE);
     }
 
-    res
+    Ok(res)
 }
 
 #[test]
-fn test() {
+fn test_base64() {
     let res = base64_encode("你好啊".as_bytes());
     println!("res={}", res);
     let res = base64_decode(res.as_bytes());
-    println!("res={:?}", String::from_utf8_lossy(&res));
+    println!("res={:?}", String::from_utf8_lossy(&res.unwrap()));
+    // 5L2g5aW95ZWK
+    println!("res={:?}", &base64_decode(b"5L2g5aW95ZW"));
 }
