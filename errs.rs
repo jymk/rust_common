@@ -6,7 +6,7 @@ pub struct SError(String);
 
 impl SError {
     pub fn to_sresult<T>(&self) -> SResult<T> {
-        sresult_from_err(&self.0)
+        new_err(&self.0)
     }
 }
 
@@ -46,11 +46,18 @@ impl ToString for SError {
     }
 }
 
-pub type SResult<T> = std::result::Result<T, SErrs>;
+pub type SResult<T> = std::result::Result<T, SError>;
 
-/// 从from SErrs生成SResult
-pub fn sresult_from_err<T: Into<SErrs>, U>(t: T) -> SResult<U> {
-    SErrs::from(t.into()).to_sresult()
+pub fn new_err<T, U: ToString>(u: &U) -> SResult<T> {
+    Err(SError(u.to_string()))
+}
+
+pub fn to_err<E: Into<SErrs>, T>(e: E) -> SResult<T> {
+    e.into().to_sresult()
+}
+
+pub fn new<T>(t: T) -> SResult<T> {
+    Ok(t)
 }
 
 pub fn sresult_to_string<T: std::fmt::Debug>(res: SResult<T>) -> String {
@@ -71,7 +78,12 @@ pub enum SErrs {
 
 impl SErrs {
     pub fn to_sresult<T>(self) -> SResult<T> {
-        Err(self)
+        match &self {
+            SErrs::IoError(e) => new_err(e),
+            SErrs::FromU8Error(e) => new_err(e),
+            SErrs::SError(e) => new_err(&e.0),
+            SErrs::NullError => new_err::<T, &str>(&""),
+        }
     }
 }
 

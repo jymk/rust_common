@@ -120,5 +120,5 @@ fn test_base64() {
     let res = base64_decode(res.as_bytes());
     println!("res={:?}", String::from_utf8_lossy(&res.unwrap()));
     // 5L2g5aW95ZWK
-    println!("res={:?}", &base64_decode(b"5L2g5aW95ZW"));
+    println!("res={:?}", &base64_decode(b"5L2g5aW95ZW").unwrap_err());
 }

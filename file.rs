@@ -4,7 +4,7 @@ use std::{
     path::{Component, Path},
 };
 
-use crate::errs::{sresult_from_err, SResult};
+use crate::errs::{to_err, SResult};
 
 /// 获取当前路径的根路径
 pub fn root_path() -> Option<String> {
@@ -48,7 +48,7 @@ fn _writable_file(path: &str, append: bool) -> SResult<File> {
     if f.is_err() {
         let f_err = format!("文件打开失败, f={:?}", f);
         eprintln!("{}", f_err);
-        return sresult_from_err(f_err);
+        return to_err(f_err);
     }
     Ok(f.unwrap())
 }
@@ -57,7 +57,7 @@ fn _writable_file(path: &str, append: bool) -> SResult<File> {
 pub fn read_file(path: &str) -> SResult<String> {
     let content = fs::read_to_string(path);
     if content.is_err() {
-        return sresult_from_err(content);
+        return to_err(content);
     }
     Ok(content.unwrap())
 }
@@ -66,7 +66,7 @@ pub fn read_file(path: &str) -> SResult<String> {
 pub fn read_kv(path: &str) -> SResult<BTreeMap<String, String>> {
     let data = std::fs::read_to_string(&path);
     if data.is_err() {
-        return sresult_from_err(data.unwrap_err());
+        return to_err(data);
     }
     let data = data.unwrap();
     let mut res = BTreeMap::default();
