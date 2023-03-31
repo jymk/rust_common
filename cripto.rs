@@ -1,3 +1,5 @@
+use crate::cm_log::log_init;
+
 pub fn encrypt<T: AsRef<[u8]>>(input: T) -> String {
     let h = hmac_sha512::Hash::hash(input);
     to_hex(&h)
@@ -13,6 +15,7 @@ pub fn to_hex<T: AsRef<[u8]>>(input: T) -> String {
 
 #[test]
 fn test_encrypt() {
+    log_init(log::LevelFilter::Debug);
     let h = to_hex(&hmac_sha512::Hash::hash("sss"));
-    println!("encrypt={}, hlen={}", h, h.len());
+    super::debug!("encrypt={}, hlen={}", h, h.len());
 }

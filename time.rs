@@ -19,5 +19,6 @@ pub fn since(t: SystemTime) -> Duration {
 
 #[test]
 fn test() {
-    println!("now={:?}", now_drt());
+    super::cm_log::log_init(super::LevelFilter::Debug);
+    super::debug!("now={:?}", now_drt());
 }

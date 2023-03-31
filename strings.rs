@@ -8,8 +8,8 @@ pub fn u8s_to_str(data: &[u8]) -> String {
         x.push(*y as char);
         x
     });
-    println!("u8s_to_chars={:?}", String::from_iter(res.clone()));
-    // println!("u8s_to_chars={:?}", res);
+    super::debug!("u8s_to_chars={:?}", String::from_iter(res.clone()));
+    // super::debug!("u8s_to_chars={:?}", res);
     String::from_iter(res)
 }
 

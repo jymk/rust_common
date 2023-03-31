@@ -10,7 +10,7 @@ use crate::errs::{to_err, SResult};
 pub fn root_path() -> Option<String> {
     let buf = std::env::current_dir();
     if buf.is_err() {
-        eprintln!("获取当前路径失败, buf={:?}", buf);
+        super::error!("获取当前路径失败, buf={:?}", buf);
         return None;
     }
     let v = buf.unwrap();
@@ -47,7 +47,7 @@ fn _writable_file(path: &str, append: bool) -> SResult<File> {
     let f = open_opt.open(path);
     if f.is_err() {
         let f_err = format!("文件打开失败, f={:?}", f);
-        eprintln!("{}", f_err);
+        super::error!("{}", f_err);
         return to_err(f_err);
     }
     Ok(f.unwrap())

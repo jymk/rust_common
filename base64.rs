@@ -115,10 +115,15 @@ pub fn base64_decode(data: &[u8]) -> SResult<Vec<u8>> {
 
 #[test]
 fn test_base64() {
+    use log::{debug, error, info};
+    // log4rs::init_file("log4rs_test.yaml", Default::default()).unwrap();
+    crate::cm_log::log_init(log::LevelFilter::Info);
+    // crate::cm_log::log_init_with_file(log::LevelFilter::Info, "base64.log");
+
     let res = base64_encode("你好啊".as_bytes());
-    println!("res={}", res);
+    debug!("res1={}", res);
     let res = base64_decode(res.as_bytes());
-    println!("res={:?}", String::from_utf8_lossy(&res.unwrap()));
+    info!("res2={:?}", String::from_utf8_lossy(&res.unwrap()));
     // 5L2g5aW95ZWK
-    println!("res={:?}", &base64_decode(b"5L2g5aW95ZW").unwrap_err());
+    error!("res={:?}", &base64_decode(b"5L2g5aW95ZW").unwrap_err());
 }
