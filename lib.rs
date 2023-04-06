@@ -11,7 +11,3 @@ pub mod time;
 pub use log::LevelFilter;
 pub use log::{debug, error, info, trace, warn};
 pub use serde_json;
-
-fn main() {
-    cm_log::log_init(LevelFilter::Debug);
-}

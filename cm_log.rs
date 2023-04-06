@@ -19,7 +19,7 @@ pub fn log_init(level: LevelFilter) -> log4rs::Handle {
     log4rs::init_config(config).unwrap()
 }
 
-pub fn log_init_with_file(level: LevelFilter, filename: &str) -> log4rs::Handle {
+pub fn log_init_to_file(level: LevelFilter, filename: &str) -> log4rs::Handle {
     let console_out = ConsoleAppender::builder()
         .encoder(Box::new(PatternEncoder::new(LOG_FMT)))
         .build();
