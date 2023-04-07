@@ -22,16 +22,9 @@ pub fn unescape(s: &str) -> String {
         .replace(r#"\\n"#, r#"\n"#)
 }
 
-/// 提取出数字和字母，并转小写
-pub fn extract_normal_lower_char(s: &str) -> String {
-    // let mut res = String::default();
-    // for c in s.chars() {
-    //     match c {
-    //         '0'..='9' | 'a'..='z' | 'A'..='Z' => res.push(c),
-    //         _ => {}
-    //     }
-    // }
-    s.to_lowercase()
+/// 去除前后空格，并转小写
+pub fn trim_and_lower(s: &str) -> String {
+    s.trim().to_lowercase()
 }
 
 #[test]
