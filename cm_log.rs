@@ -4,7 +4,7 @@ use log4rs::append::file::FileAppender;
 use log4rs::config::{Appender, Config, Logger, Root};
 use log4rs::encode::pattern::PatternEncoder;
 
-const LOG_FMT: &str = "{d} [{t}] {h({l})} - {m}{n}";
+const LOG_FMT: &str = "[{d}] [{t}/{L}] {h({l})} - {m}{n}";
 
 pub fn log_init(level: LevelFilter) -> log4rs::Handle {
     let console_out = ConsoleAppender::builder()
